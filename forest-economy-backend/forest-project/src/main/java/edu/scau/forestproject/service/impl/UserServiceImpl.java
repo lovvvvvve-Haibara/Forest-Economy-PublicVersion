@@ -19,6 +19,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Override
     public LoginInfo login(User user) {
         User u = userMapper.selectByUsernameOrPhonenumberAndPassword(user);
@@ -28,7 +31,7 @@ public class UserServiceImpl implements UserService {
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", u.getId());
             claims.put("username", u.getUsername());
-            String jwt = JwtUtils.generateToken(claims);
+            String jwt = jwtUtils.generateToken(claims);
             return new LoginInfo(u.getId(), u.getUsername(), jwt);
         }
 

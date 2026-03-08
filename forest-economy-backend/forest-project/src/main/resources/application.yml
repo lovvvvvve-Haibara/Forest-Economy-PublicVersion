@@ -3,16 +3,16 @@ spring:
     name: forest-project
 
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/forest-economy}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/forest_economy}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:change_me}
+    username: ${DB_USERNAME:YOUR_DB_USERNAME}
+    password: ${DB_PASSWORD:YOUR_DB_PASSWORD}
 
 mybatis:
-    configuration:
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 forest:
   auth:
-    jwt-secret-base64: ${JWT_SECRET_BASE64:ZGVtb19qd3Rfc2VjcmV0X2Zvcl9vcGVuX3NvdXJjZV9vbmx5X2NoYW5nZV9tZQ==}
+    jwt-secret-base64: ${JWT_SECRET_BASE64:}
     jwt-expiration-ms: ${JWT_EXPIRATION_MS:2592000000}

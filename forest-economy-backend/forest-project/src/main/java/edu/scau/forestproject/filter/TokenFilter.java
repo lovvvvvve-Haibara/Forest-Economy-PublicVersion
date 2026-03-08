@@ -6,12 +6,16 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
 @Slf4j
 @WebFilter(urlPatterns = "/*")
 public class TokenFilter implements Filter {
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -22,7 +26,7 @@ public class TokenFilter implements Filter {
         String requestURI = request.getRequestURI();
 
         //判断是否为登陆请求，如果是，则放行
-        if (requestURI.contains("/login")) {
+        if (requestURI.contains("/login") || requestURI.contains("/register") || "OPTIONS".equalsIgnoreCase(request.getMethod())) {
             log.info("登陆请求，放行");
             filterChain.doFilter(request, response);
             return;
@@ -40,7 +44,7 @@ public class TokenFilter implements Filter {
 
         //如果token存在，则校验，若失败，则进入未登陆的主页
         try {
-            JwtUtils.parseToken(token);
+            jwtUtils.parseToken(token);
         } catch (Exception e) {
             log.info("token非法");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);//401
