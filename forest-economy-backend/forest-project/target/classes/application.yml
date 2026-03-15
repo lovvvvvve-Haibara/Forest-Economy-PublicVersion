@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: forest-project
+  jackson:
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/forest-economy}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  cache:
+    type: caffeine
+    cache-names: userBrief
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=10m
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+forest:
+  auth:
+    jwt-secret-base64: ${JWT_SECRET_BASE64:}
+    jwt-expiration-ms: ${JWT_EXPIRATION_MS:2592000000}
+    white-list:
+      - /api/v1/auth/login
+      - /api/v1/auth/register
+      - /login
+      - /register
+      - /actuator/health
+  concurrency:
+    rate-limit:
+      enabled: ${RATE_LIMIT_ENABLED:true}
+      window-seconds: ${RATE_LIMIT_WINDOW_SECONDS:60}
+      login-limit-per-ip: ${RATE_LIMIT_LOGIN_PER_IP:30}
+      register-limit-per-ip: ${RATE_LIMIT_REGISTER_PER_IP:10}
+      protected-api-limit-per-ip: ${RATE_LIMIT_API_PER_IP:300}
+      cache-max-size: ${RATE_LIMIT_CACHE_MAX_SIZE:20000}
+  rag:
+    service-url: ${RAG_SERVICE_URL:http://localhost:8000}
+    timeout-seconds: ${RAG_TIMEOUT_SECONDS:60}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always

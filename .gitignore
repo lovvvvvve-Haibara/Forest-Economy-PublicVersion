@@ -1,0 +1,26 @@
+# Build & runtime
+/target/
+*.class
+*.jar
+*.war
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# IDE & OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+*.log
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Env and secrets
+.env
+.env.*
+!.env.example
